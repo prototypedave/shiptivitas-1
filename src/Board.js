@@ -55,9 +55,21 @@ export default class Board extends React.Component {
   componentDidMount() {
     // initialize containers
     const drake = dragula([this.swimlanes.backlog.current, this.swimlanes.inProgress.current, this.swimlanes.complete.current]);
-    drake.on("drag", (el) => {
-      console.log("Dragging:", el);
+    drake.on("drop", (el, target, source) => {
+      // set data-status of the target where dragged
+      el.setAttribute('data-status', target.previousSibling.textContent.trim());
+
+      // update the classes to match with the swimline container it is now
+      if (target.previousSibling.textContent.trim() === 'Backlog') {
+        el.className = 'Card Card-grey';
+      } else if (target.previousSibling.textContent.trim() === 'In Progress') {
+        el.className = 'Card Card-blue';
+      } else {
+        // progress is = complete
+        el.className = 'Card Card-green';
+      }
     });
+
 
   }
 
