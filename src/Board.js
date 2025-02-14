@@ -3,6 +3,7 @@ import Dragula from 'dragula';
 import 'dragula/dist/dragula.css';
 import Swimlane from './Swimlane';
 import './Board.css';
+import dragula from 'dragula';
 
 export default class Board extends React.Component {
   constructor(props) {
@@ -50,6 +51,16 @@ export default class Board extends React.Component {
       status: companyDetails[3],
     }));
   }
+
+  componentDidMount() {
+    // initialize containers
+    const drake = dragula([this.swimlanes.backlog.current, this.swimlanes.inProgress.current, this.swimlanes.complete.current]);
+    drake.on("drag", (el) => {
+      console.log("Dragging:", el);
+    });
+
+  }
+
   renderSwimlane(name, clients, ref) {
     return (
       <Swimlane name={name} clients={clients} dragulaRef={ref}/>
